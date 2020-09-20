@@ -54,13 +54,13 @@ namespace ExcelConverter
             xlRange = xlWorksheet.UsedRange;
             activities = new List<DayProgram>();
 
-            activities.Add(new DayProgram { Name = "Monday" });
-            activities.Add(new DayProgram { Name = "Tuesday" });
-            activities.Add(new DayProgram { Name = "Wednesday" });
-            activities.Add(new DayProgram { Name = "Thursday" });
-            activities.Add(new DayProgram { Name = "Friday" });
-            activities.Add(new DayProgram { Name = "Saturday" });
-            activities.Add(new DayProgram { Name = "Sunday" });
+            activities.Add(new DayProgram { Name = "Monday", Id=0 });
+            activities.Add(new DayProgram { Name = "Tuesday", Id=1 });
+            activities.Add(new DayProgram { Name = "Wednesday", Id=2 });
+            activities.Add(new DayProgram { Name = "Thursday", Id=3 });
+            activities.Add(new DayProgram { Name = "Friday", Id=4 });
+            activities.Add(new DayProgram { Name = "Saturday", Id=5 });
+            activities.Add(new DayProgram { Name = "Sunday", Id=6 });
         }
 
         private void Cleaning()
@@ -118,13 +118,13 @@ namespace ExcelConverter
             FirebaseClient _firebaseClient = new FirebaseClient(_url);
 
 
-             _firebaseClient.Child("ddfdf").PostAsync(activities);
+             _firebaseClient.Child("DayPrograms").PostAsync(activities);
 
 
-            foreach (var day in activities)
-            {
-                _firebaseClient.Child(day.Name).PostAsync(day);
-            }
+            // foreach (var day in activities)
+            // {
+            //     _firebaseClient.Child(day.Name).PostAsync(day);
+            // }
 
             Console.WriteLine("**************************************************************************************************End");
             Console.ReadKey();
