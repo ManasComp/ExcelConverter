@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 using TimeManagement.Models;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using Firebase.Database;
 using Firebase.Database.Query;
@@ -18,8 +19,13 @@ namespace ExcelConverter
         Excel._Worksheet xlWorksheet;
         Excel.Range xlRange;
         List<DayProgram> activities;
-        FireBaseService fireBaseService;
+        FirebaseService fireBaseService;
 
+        private string Id;
+        public XLSXConverter(string id)
+        {
+            Id = id;
+        }
         private void CellParse(int x, int y, int activityId)
         {
             Console.WriteLine("CellParse");
@@ -87,48 +93,19 @@ namespace ExcelConverter
             Cleaning();
         }
 
-        private void Write()
-        {
-            Console.WriteLine("Write");
-            foreach (var activity in activities)
-            {
-                Console.WriteLine(activity.Name);
-                foreach (var items in activity)
-                {
-                    Console.WriteLine(items.Start + "-" + items.End + "-" + items.Name);
-                }
-            }
-        }
-
         public async Task AddData()
         {
             Console.WriteLine("AddData");
             Loading();
-            fireBaseService = new FireBaseService();
-            //Write();
-
-            // await fireBaseService.PostAsync<int>("program", 1);
-            //await fireBaseService.PostAsyncList<int>("program", new List<int>(){1,2});
-            // for (int i=0;i<7; i++)
-            // {
-            //     //if (activities[i]!=null)
-            //         //await fireBaseService.PostAsyncList<Activity>(activities[i].Name, activities[i]);
-            // }
+            fireBaseService = new FirebaseService();
+            
             string _url = "https://timemanegment-74160.firebaseio.com/";
-            FirebaseClient _firebaseClient = new FirebaseClient(_url);
-
-
-             _firebaseClient.Child("DayPrograms").PostAsync(activities);
-
-
-            // foreach (var day in activities)
-            // {
-            //     _firebaseClient.Child(day.Name).PostAsync(day);
-            // }
-
+            FirebaseClient firebaseClient = new FirebaseClient(_url);
+            //firebaseClient.Child(Id).DeleteAsync();
+            firebaseClient.Child(Id).PostAsync(activities);
+            Thread.Sleep(10000);
             Console.WriteLine("**************************************************************************************************End");
-            Console.ReadKey();
-            Console.ReadLine();
         }
     }
 }
+
