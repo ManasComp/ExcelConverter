@@ -29,15 +29,26 @@ namespace FoodOrderApp.Services
             string _url = "https://timemanegment-74160.firebaseio.com/";
             FirebaseClient firebaseClient = new FirebaseClient(_url);
             //firebaseClient.Child("Users1").DeleteAsync();
-            firebaseClient.Child("Users1").PostAsync(user);
+            firebaseClient.Child("Users").PostAsync(user);
             Console.WriteLine("ready");
             return true;
         }
+        
+        public async Task<bool> IsUserExists(string uname)
+        {
+            string _url = "https://timemanegment-74160.firebaseio.com/";
+            FirebaseClient firebaseClient = new FirebaseClient(_url);
+            User user=firebaseClient.Child("Users").OnceAsync<User>().Result.Select(e=>e.Object as User)
+                .FirstOrDefault(u => u.Username == uname);
+           
+            return (user != null);
+        }
+
         public async Task<bool> Login(string uname, string passwd)
         {
             string _url = "https://timemanegment-74160.firebaseio.com/";
             FirebaseClient _firebaseClient = new FirebaseClient(_url);
-            var mrdka = await _firebaseClient.Child("Users1").OnceAsync<User>();
+            var mrdka = await _firebaseClient.Child("Users").OnceAsync<User>();
             user = mrdka.Select(e => e.Object as User).ToList()
                 .Where(u => u.Username == uname)
                 .FirstOrDefault(u => u.Password == passwd);

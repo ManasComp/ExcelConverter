@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity.cs" />
-    <Compile Include="BaseViewModel.cs" />
     <Compile Include="DayProgram.cs" />
     <Compile Include="FireBaseService.cs" />
     <Compile Include="LoginViewModel.cs" />

@@ -19,21 +19,17 @@ namespace ExcelConverter
         public static async void mrdk()
         {
             LoginViewModel loginViewModel = new LoginViewModel();
-            Console.WriteLine("login/register");
             Console.WriteLine("Name");
-            string name = "test1";
+            string name = Console.ReadLine();
             Console.WriteLine("pass");
-            string pass = "test1p";
-            loginViewModel.Register(name, pass);
-            Console.WriteLine("registered");
+            string pass = Console.ReadLine();
             
-            Thread.Sleep(5000);
-            string id = loginViewModel.Login(name, pass).Result;
-            string Id  = id;
-            Console.WriteLine(Id);
+            string id = loginViewModel.LogOrReg(name, pass).Result;
+            
+            Console.WriteLine(id);
             Console.WriteLine("Start");
             Thread.Sleep(5000);
-            XLSXConverter xLSX = new XLSXConverter(Id);
+            XLSXConverter xLSX = new XLSXConverter(id);
             Thread.Sleep(5000);
             await xLSX.AddData();
             Console.WriteLine("end");
